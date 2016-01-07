@@ -12,14 +12,14 @@
 // efficient way is to launch into a lower orbit and Hoffman transfer later, I internally
 // tune the script to launch into a stable orbit of slightly above 70 Km. (no customization here, sorry!)
 
-//////////// setup code //////////////
+/////////// setup code //////////////
 
 clearscreen.
 set ship:control:pilotmainthrottle to 0. // turn down the engines to 0 so that you don't have to do it all the time.
 
 ////////// end of setup /////////////
 
-///////// functions ////////////
+///////////// functions /////////////
 
 // detects if the current stage is depleted of fuel (ready to proceed to the next stage).
 function stage_depletion {
@@ -70,7 +70,7 @@ function print_message {
 	print "Delta V to achieve circular orbit at AP is: " + round(deltav_at_ap(),2).
 }
 
-///////// end of functions ///////////
+///////// end of functions //////////
 
 
 
