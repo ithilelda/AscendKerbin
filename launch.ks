@@ -15,7 +15,6 @@
 //////////// setup code //////////////
 
 clearscreen.
-declare parameter dir. // numeric degrees on the compass to indicate launching direction. 0 means north, 90 is east, 180 is south, and 270 is west.
 set ship:control:pilotmainthrottle to 0. // turn down the engines to 0 so that you don't have to do it all the time.
 
 ////////// end of setup /////////////
@@ -88,13 +87,13 @@ until rocket_depletion() or mission_done = true {
 		lock throttle to 1.
 		sas off.
 		rcs off.
-		lock steering to heading(dir, 90). // lock the steering to vertical up initially. we'll gradually turn later.
+		lock steering to heading(90, 90). // lock the steering to vertical up initially. we'll gradually turn later.
 		stage. // launch off.
 		set ship_mode to 1.
 	}
 	else if ship_mode = 1 { // The pitch over maneuver phase. We adjust the pitch angle based on the mass of the spacecraft.
-		declare needed_pitch to max(30, 90 - sqrt(sqrt(170.67 * altitude))).
-		lock steering to heading(dir, needed_pitch).
+		declare needed_pitch to max(30, 90 - sqrt(0.2025 * altitude)).
+		lock steering to heading(90, needed_pitch).
 		lock throttle to 1.
 		if airspeed > 50 { // air speed reaches 50 m/s, we start our gravity turn.
 			set ship_mode to 2.
