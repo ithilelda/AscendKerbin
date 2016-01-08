@@ -19,3 +19,13 @@ function ak_active_eng {
 	}
 	return ac_engs.
 }
+
+// function to return a formatted time string. parameter is time in seconds.
+function ak_pretty_time {
+	parameter secs.
+	local rsec to round(secs).
+	local hour to mod(rsec, 3600).
+	local min to mod(rsec - hour * 3600, 60).
+	local sec to secs - hour * 3600 - min * 60.
+	return hour + " hr " + min + " min " + sec + " sec.".
+}

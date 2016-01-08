@@ -60,11 +60,20 @@ function ak_throttle_for {
 	return ratio.
 }
 
+// function to calculate the semi major axis of current orbit.
+function ak_sma {
+	return (apoapsis + periapsis + 2 * body:radius) / 2.
+}
+
+//simple function to calculate the orbit period of vessels (small mass compared to planet body). The resulting unit is seconds.
+function ak_vessel_period {
+	return 2 * constant:pi * sqrt(ak_sma()^3 / body:mu).
+}
+
 // calculate the  minimum deltav needed to circularize the current suborbital trajectory into an orbit at ap.
 function ak_deltav_to_orbit {
 	local r to body:radius + apoapsis.
-	local sma to (apoapsis + periapsis + 2 * body:radius) / 2.
-	local v1 to sqrt(body:mu * (2 / r - 1 / sma)).
+	local v1 to sqrt(body:mu * (2 / r - 1 / ak_sma())).
 	local v2 to sqrt(body:mu / r).
 	return v2 - v1.
 }
