@@ -59,6 +59,7 @@ function deltav_at_ap {
 function print_message {
 	clearscreen.
 	print "Current ship mode is: " + ship_mode.
+	print "Current dynamic pressure is: " + round(ship:dynamicpressure,2).
 	print "Current Altitude is: " + round(altitude,2).
 	print "Current Air speed is: " + round(airspeed,2).
 	print "Current Ground speed is: " + round(groundspeed,2).
@@ -92,16 +93,16 @@ until rocket_depletion() or mission_done = true {
 		set ship_mode to 1.
 	}
 	else if ship_mode = 1 { // The pitch over maneuver phase. We adjust the pitch angle based on the mass of the spacecraft.
-		declare needed_pitch to max(30, 90 - sqrt(0.2025 * altitude)).
-		lock steering to heading(90, needed_pitch).
+		//declare needed_pitch to max(30, 90 - sqrt(0.2025 * altitude)).
+		lock steering to heading(90, 70).
 		lock throttle to 1.
-		if airspeed > 50 { // air speed reaches 50 m/s, we start our gravity turn.
+		if altitude > 10000 {
 			set ship_mode to 2.
 		}
 	}
 	else if ship_mode = 2 { // gravity turn phase. We aim at prograde to keep angle of attack at 0.
 		lock steering to srfprograde.
-		lock throttle to 1.
+		lock throttle to min(1, throttle_for(1.5)).
 		if apoapsis > body:atm:height * 1.05 { // 5% above the atmosphere, just on the safe side.
 			set ship_mode to 3.
 		}
@@ -149,6 +150,7 @@ else {
 	print "Unknown error! You shouldn't reach here! Check code for bugs.".
 }
 remove ap_node.
+sas on.
 unlock steering.
 unlock throttle.
 print "program execution ends...".
